@@ -59,11 +59,7 @@ dados %>%
     )
 ```
 
-```{r}
-dados %>%
-    select(comentaram_prop, PDI, Internet, usuarios) %>%
-    ggpairs(title="correlogram with ggpairs()") 
-```
+Com o objetivo de observar a existência de alguma relação entre as múltiplas variáveis numéricas observadas, optamos pelo Pair Plot acima, que além dos gráficos de dispersão entre as variáveis, apresentam parâmetros complementares como Distribuição, Densidade, Correlação e Elipses de Correlação que enriquecem o entendimento da natureza das variáveis e facilita a tarefa de análise de relação. Outro fator importante desta visualização é a sua escalabilidade, podendo ser expandida para um número qualquer de variáveis diante da dificuldade de analisar relação quando se tem mais de duas variáveis.
 
 ## Outras formas de ver
 
@@ -76,6 +72,7 @@ dados %>%
     scale_size(name="Internet")
 ```
 
+No Gráfico de Bolhas acima, temos o limite de representação de apenas três das quatro variáveis que pretendemos analisar. Podemos observar o que parece ser uma relação linear negativa entre a proporção das pessoas que comentaram de um certo país (comentaram_prop) e o quão hierárquicas são as relações neste país (PDI), porém a relação do quanto as pessoas daquele país têm acesso à Internet (Internet) com as outras variáveis não é muito clara como no caso anterior, visto que para o ser humano é mais fácil diferenciar a posição do que o tamanho de objetos.
 
 ```{r}
 dados %>%
@@ -85,6 +82,8 @@ dados %>%
     scale_fill_continuous(type = "viridis") +
     theme_bw()
 ```
+
+Assim como no Gráfico de Bolhas, no Gráfico de Densidade Bidimensional acima, só podemos representar três das quatro variáveis a serem analisadas. É possível observar melhor a relação da terceira variável (representada pela cor) com as outras duas (representadas pela posição) do que no Gráfico de Bolhas, visto que cores são melhores diferenciadas pelos seres humanos do que o tamanho de objetos. Por outro lado temos uma perca na precisão no gráfico, pois utilizando bins bidimensionais perdemos a informação da localização exata dos pontos e possíveis padrões que podem ser formados.
 
 ```{r}
 dados %>%
@@ -98,7 +97,24 @@ dados %>%
     pairs()
 ```
 
-## Bônus
+```{r}
+dados %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    ggpairs(title="correlogram with ggpairs()")
+```
 
+## Bônus
 Inclua o continente dos países (`six_regions`) na visualização.
+
+```{r}
+my_cols <- c("#00AFBB", "#E7B800", "#FC4E07")
+data <-dados %>% select(comentaram_prop, PDI, Internet, usuarios, six_regions)
+
+data %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    pairs(pch = 19,  cex = 0.5,
+      col = my_cols[data$six_regions],
+      lower.panel=NULL)
+```
+
 
