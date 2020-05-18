@@ -10,7 +10,10 @@ theme: sandstone
 library(tidyverse)
 library(here)
 library(viridis)
-source(here::here("code/lib.R"))
+library(psych)
+library(GGally)
+library(hrbrthemes)
+source(here::here("code/import_data.R"))
 theme_set(theme_bw())
 
 knitr::opts_chunk$set(tidy = FALSE,
@@ -44,9 +47,56 @@ Considerando essa variável, queremos examinar a relação entre ela e o quão h
 
 Faça uma visualização que usa os princípios de eficácia no projeto de visualizações para facilitar as comparações que você acha que são as mais importantes para entendermos esse contexto. 
 
+```{r}
+dados %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    pairs.panels( 
+             method="pearson", # correlation method
+             hist.col="#00AFBB",
+             density=TRUE,  # show density plots
+             ellipses=TRUE, # show correlation ellipses
+             smooth=TRUE,
+    )
+```
+
+```{r}
+dados %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    ggpairs(title="correlogram with ggpairs()") 
+```
+
 ## Outras formas de ver
 
-Em seguida, faça 5 visualizações que usem as mesmas variáveis e também pontos, mas que sejam **menos eficazes** que a que você escolheu acima. 
+Em seguida, faça 5 visualizações que usem as mesmas variáveis e também pontos, mas que sejam **menos eficazes** que a que você escolheu acima.
+
+```{r}
+dados %>%
+    ggplot(aes(x=comentaram_prop, y=PDI, size=Internet)) +
+    geom_point(alpha=0.7, color="darkred") +
+    scale_size(name="Internet")
+```
+
+
+```{r}
+dados %>%
+    ggplot(aes(x=PDI, y=Internet)) +
+    stat_density_2d(aes(fill=comentaram_prop), colour="white") +
+    geom_bin2d(bins=4) +
+    scale_fill_continuous(type = "viridis") +
+    theme_bw()
+```
+
+```{r}
+dados %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    ggcorr(label=TRUE, size=3.5, hjust = 0.5, angle = -45)
+```
+
+```{r}
+dados %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    pairs()
+```
 
 ## Bônus
 
