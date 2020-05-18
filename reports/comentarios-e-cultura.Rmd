@@ -91,11 +91,15 @@ dados %>%
     ggcorr(label=TRUE, size=3.5, hjust = 0.5, angle = -45)
 ```
 
+Na visualização acima podemos representar todas as variáveis a serem analisadas, porém é possível apenas visualizar o valor do coeficiente de correlação de Pearson entre pares de variáveis, apesar de ser um importante forma de quantificar e complementar a analise de relação, os coeficientes de correlação apenas, não são suficientes para entender a natureza da relação entre as variáveis.   
+
 ```{r}
 dados %>%
     select(comentaram_prop, PDI, Internet, usuarios) %>%
     pairs()
 ```
+
+No processo de melhora das visualizações, podemos agora analisar a dispersão entre os pares de variáveis, podendo observar a existência de padrões e obtendo precisão na localização dos pontos. 
 
 ```{r}
 dados %>%
@@ -108,7 +112,7 @@ Inclua o continente dos países (`six_regions`) na visualização.
 
 ```{r}
 my_cols <- c("#00AFBB", "#E7B800", "#FC4E07")
-data <-dados %>% select(comentaram_prop, PDI, Internet, usuarios, six_regions)
+data <- dados %>% select(comentaram_prop, PDI, Internet, usuarios, six_regions)
 
 data %>%
     select(comentaram_prop, PDI, Internet, usuarios) %>%
