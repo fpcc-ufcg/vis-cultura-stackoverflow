@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/616951/fee934f3298f4b9faacea9cc8e4a7c45
+bundleId: https://api.rpubs.com/api/v1/document/616951/fee934f3298f4b9faacea9cc8e4a7c45
+url: http://rpubs.com/ronaldompf/616951
+when: 1589941590.76377

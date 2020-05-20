@@ -85,7 +85,7 @@ dados %>%
     theme_bw()
 ```
 
-Assim como no Gráfico de Bolhas, no Gráfico de Densidade Bidimensional acima, só podemos representar três das quatro variáveis a serem analisadas. É possível observar melhor a relação da terceira variável (representada pela cor) com as outras duas (representadas pela posição) do que no Gráfico de Bolhas, visto que cores são melhores diferenciadas pelos seres humanos do que o tamanho de objetos. Por outro lado temos uma perca na precisão no gráfico, pois utilizando bins bidimensionais perdemos a informação da localização exata dos pontos e possíveis padrões que podem ser formados.
+Assim como no Gráfico de Bolhas, no Gráfico de Densidade Bidimensional acima, só podemos representar três das quatro variáveis a serem analisadas. É possível observar melhor a relação da terceira variável (representada pela cor) com as outras duas (representadas pela posição) do que no Gráfico de Bolhas, visto que cores são melhores diferenciadas pelos seres humanos do que o tamanho de objetos. Por outro lado temos uma perda na precisão no gráfico, pois utilizando bins bidimensionais perdemos a informação da localização exata dos pontos e possíveis padrões que podem ser formados.
 
 ```{r}
 dados %>%
@@ -110,7 +110,7 @@ dados %>%
     ggpairs()
 ```
 
-Em seguida, adicionamos informações para complementar e quantificar a analise, como os valores do coeficiente de correlação linear de *Pearson* e o gráfico de densidade das variáveis compactados em uma única visualização de forma objetiva.
+Em seguida, adicionamos informações para complementar e quantificar a analise, como os valores do coeficiente de correlação linear de *Pearson* e o gráfico de densidade das variáveis, compactados em uma única visualização de forma objetiva.
 
 ## Bônus
 Inclua o continente dos países (`four_regions`) na visualização.
