@@ -59,7 +59,7 @@ dados %>%
     )
 ```
 
-Com o objetivo de observar a existência de alguma relação entre as múltiplas variáveis numéricas observadas, optamos pelo Pair Plot acima, que além dos gráficos de dispersão entre as variáveis, apresentam parâmetros complementares como Distribuição, Densidade, Correlação e Elipses de Correlação que enriquecem o entendimento da natureza das variáveis e facilita a tarefa de análise de relação. Outro fator importante desta visualização é a sua escalabilidade, podendo ser expandida para um número qualquer de variáveis diante da dificuldade de analisar relação quando se tem mais de duas variáveis.
+Com o objetivo de observar a existência de alguma relação entre as múltiplas variáveis numéricas observadas, optamos pelo *Pair Plot* acima, que além dos gráficos de dispersão entre as variáveis, apresentam parâmetros complementares como Distribuição, Densidade, Correlação e Elipses de Correlação que enriquecem o entendimento da natureza das variáveis e facilita a tarefa de análise de relação. Outro fator importante desta visualização é a sua escalabilidade, podendo ser expandida para um número qualquer de variáveis diante da dificuldade de analisar relação quando se tem mais de duas variáveis.
 
 ## Outras formas de ver
 
@@ -67,15 +67,17 @@ Em seguida, faça 5 visualizações que usem as mesmas variáveis e também pont
 
 ```{r}
 dados %>%
+    na.omit() %>%
     ggplot(aes(x=comentaram_prop, y=PDI, size=Internet)) +
     geom_point(alpha=0.7, color="darkred") +
     scale_size(name="Internet")
 ```
 
-No Gráfico de Bolhas acima, temos o limite de representação de apenas três das quatro variáveis que pretendemos analisar. Podemos observar o que parece ser uma relação linear negativa entre a proporção das pessoas que comentaram de um certo país (comentaram_prop) e o quão hierárquicas são as relações neste país (PDI), porém a relação do quanto as pessoas daquele país têm acesso à Internet (Internet) com as outras variáveis não é muito clara como no caso anterior, visto que para o ser humano é mais fácil diferenciar a posição do que o tamanho de objetos.
+No Gráfico de Bolhas acima, temos o limite de representação de apenas três das quatro variáveis que pretendemos analisar. Podemos observar o que parece ser uma relação linear negativa entre a proporção das pessoas que comentaram de um certo país (`comentaram_prop`) e o quão hierárquicas são as relações neste país (`PDI`), porém a relação do quanto as pessoas daquele país têm acesso à Internet (`Internet`) com as outras variáveis não é muito clara como no caso anterior, visto que para o ser humano é mais fácil diferenciar a posição do que o tamanho de objetos.
 
 ```{r}
 dados %>%
+    na.omit() %>%
     ggplot(aes(x=PDI, y=Internet)) +
     stat_density_2d(aes(fill=comentaram_prop), colour="white") +
     geom_bin2d(bins=4) +
@@ -91,7 +93,7 @@ dados %>%
     ggcorr(label=TRUE, size=3.5, hjust = 0.5, angle = -45)
 ```
 
-Na visualização acima podemos representar todas as variáveis a serem analisadas, porém é possível apenas visualizar o valor do coeficiente de correlação de Pearson entre pares de variáveis, apesar de ser um importante forma de quantificar e complementar a analise de relação, os coeficientes de correlação apenas, não são suficientes para entender a natureza da relação entre as variáveis.   
+Na visualização acima podemos representar todas as variáveis a serem analisadas, porém é possível apenas visualizar o valor do coeficiente de correlação de *Pearson* entre pares de variáveis, apesar de ser um importante forma de quantificar e complementar a analise de relação, os coeficientes de correlação apenas, não são suficientes para entender a natureza da relação entre as variáveis.   
 
 ```{r}
 dados %>%
@@ -99,26 +101,31 @@ dados %>%
     pairs()
 ```
 
-No processo de melhora das visualizações, podemos agora analisar a dispersão entre os pares de variáveis, podendo observar a existência de padrões e obtendo precisão na localização dos pontos. 
+No processo de melhora das visualizações, podemos agora analisar a dispersão entre os pares de variáveis, observando padrões e obtendo precisão na localização dos pontos. 
+
+```{r, message=FALSE}
+dados %>%
+    na.omit() %>%
+    select(comentaram_prop, PDI, Internet, usuarios) %>%
+    ggpairs()
+```
+
+Em seguida, adicionamos informações para complementar e quantificar a analise, como os valores do coeficiente de correlação linear de *Pearson* e o gráfico de densidade das variáveis compactados em uma única visualização de forma objetiva.
+
+## Bônus
+Inclua o continente dos países (`four_regions`) na visualização.
+
+```{r, message=FALSE,  warning=FALSE}
+dados %>%
+  select(comentaram_prop, PDI, Internet, usuarios) %>%
+  ggpairs(aes(color=dados$four_regions),  upper = list(continuous = wrap("cor", size = 2.5)))
+```
 
 ```{r}
 dados %>%
-    select(comentaram_prop, PDI, Internet, usuarios) %>%
-    ggpairs(title="correlogram with ggpairs()")
+  na.omit() %>%
+  ggplot(aes(x=comentaram_prop, y=PDI, size=Internet, color=four_regions)) +
+  geom_point(alpha=0.5) +
+  scale_size(range = c(.1, 8))
 ```
-
-## Bônus
-Inclua o continente dos países (`six_regions`) na visualização.
-
-```{r}
-my_cols <- c("#00AFBB", "#E7B800", "#FC4E07")
-data <- dados %>% select(comentaram_prop, PDI, Internet, usuarios, six_regions)
-
-data %>%
-    select(comentaram_prop, PDI, Internet, usuarios) %>%
-    pairs(pch = 19,  cex = 0.5,
-      col = my_cols[data$six_regions],
-      lower.panel=NULL)
-```
-
 
