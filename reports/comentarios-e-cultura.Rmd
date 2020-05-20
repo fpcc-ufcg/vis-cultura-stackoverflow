@@ -1,5 +1,7 @@
 ---
-title: "Comentários e cultura"
+title: "FPCC2 - Laboratório 3 parte 2"
+author: "Anderson Altair Tomkelski"
+date: "20/05/2020"
 output:
     html_document:
     df_print: paged
@@ -10,7 +12,7 @@ theme: sandstone
 library(tidyverse)
 library(here)
 library(viridis)
-source(here::here("code/lib.R"))
+source(here::here("code/import_data.R"))
 theme_set(theme_bw())
 
 knitr::opts_chunk$set(tidy = FALSE,
@@ -44,11 +46,159 @@ Considerando essa variável, queremos examinar a relação entre ela e o quão h
 
 Faça uma visualização que usa os princípios de eficácia no projeto de visualizações para facilitar as comparações que você acha que são as mais importantes para entendermos esse contexto. 
 
+``` {r echo=TRUE}
+
+dados %>%
+    ggplot(
+        aes(x = reorder(comentaram_prop, Internet), 
+            y = Internet, 
+            color = PDI, 
+            size = usuarios)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Internet",
+        color = "Hierarquia",
+        size = "Usuários"
+    )
+
+```
+
+* O gráfico apresentado foi ordenado pela quantidade de pessoas que possuem acesso a internet e a proporção de comentários. Com isso, podemos perceber que o nível de PDI é menor quando o acesso à internet é maior. Quando há mais acesso a internet, podemos perceber também um aumento na proporção de comentários. Base de dados com poucos usuários são mais comuns quanto menor a quantidade de pessoas com acesso a internet.
+
+
 ## Outras formas de ver
 
 Em seguida, faça 5 visualizações que usem as mesmas variáveis e também pontos, mas que sejam **menos eficazes** que a que você escolheu acima. 
 
+``` {r echo=TRUE}
+
+dados %>%
+    ggplot(
+        aes(x = comentaram_prop, 
+            y = Internet, 
+            color = PDI, 
+            size = usuarios)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Internet",
+        color = "Hierarquia",
+        size = "Usuários"
+    )
+
+```
+
+* A falta de ordenação torna o gráfico confuso, no exemplo acima, é mais difícil apontar as realções entre as variáveis. A demonstração utilizando cores como legenda continua sendo mais clara, podemos perceber a relação entre PDI e conexão de internet, porém a relação de proporção de comentários e conexão de internet se torna mais confusa.
+
+
+``` {r echo=TRUE}
+
+dados %>%
+    ggplot(
+        aes(x = reorder(comentaram_prop, usuarios), 
+            y = usuarios, 
+            color = PDI, 
+            size = Internet)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Usuários",
+        color = "Hierarquia",
+        size = "Internet"
+    )
+
+```
+
+* Mesmo havendo ordenação, o formato de apresentação no gráfico para determinadas variáveis pode ser insatisfatória, nesse caso, não conseguimos visualizar com facilidade as diferenças de conectvidade
+
+
+``` {r echo=TRUE}
+
+dados %>%
+    ggplot(
+        aes(x = comentaram_prop, 
+            y = usuarios, 
+            color = PDI, 
+            size = Internet)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Usuários",
+        color = "Hierarquia",
+        size = "Internet"
+    )
+
+```
+
+* Sem ordenação e com apresentação má selecionada para determinadas variáveis. Esse caso é uma mescla dos dois acima, onde além de ficar muito dificil visualizar algumas variáveis, as relações entre elas ficam mais dispersas.
+
+``` {r echo=TRUE}
+
+dados %>%
+    mutate(m = mean(usuarios)) %>%
+    ggplot(
+        aes(x = reorder(comentaram_prop, m), 
+            y = m, 
+            color = PDI, 
+            size = Internet)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Usuários",
+        color = "Hierarquia",
+        size = "Internet"
+    )
+
+```
+
+* O gráfico acima apresenta problemas perda de informações referentes a uma determinada variável, mesmo havendo ordenação, o gráfico não apresenta tanta clareza.
+
+
+``` {r echo=TRUE}
+
+dados %>%
+    mutate(m = mean(comentaram_prop)) %>%
+    ggplot(
+        aes(x = m, 
+            y = Internet, 
+            color = PDI, 
+            size = usuarios)) +
+    geom_jitter(width = .1, alpha = .75) +
+    labs(
+        x = "Proporção de comentários",
+        y = "Internet",
+        color = "Hierarquia",
+        size = "Usuários"
+    )
+
+```
+
+* O gráfico acima apresenta novamente problemas com relação a omissão ou resumo de informações de forma desmedida, gráfico gerado sem ordenação.
+
 ## Bônus
 
 Inclua o continente dos países (`six_regions`) na visualização.
+
+
+``` {r echo=TRUE}
+
+dados %>%
+    ggplot(
+        aes(x = reorder(comentaram_prop, Internet), 
+            y = Internet, 
+            color = PDI, 
+            size = usuarios)) +
+    geom_jitter(aes(shape = six_regions), width = .1, alpha = .75) +
+    theme(legend.position = "bottom",
+          legend.box = "vertical") +
+    labs(
+        x = "Proporção de comentários",
+        y = "Internet",
+        color = "Hierarquia",
+        size = "Usuários",
+        shape = "Continentes"
+    )
+
+```
 
